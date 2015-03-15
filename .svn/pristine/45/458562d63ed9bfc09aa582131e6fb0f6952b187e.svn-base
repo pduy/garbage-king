@@ -1,0 +1,96 @@
+package com.InGame;
+
+import android.annotation.SuppressLint;
+import android.content.Context;
+import android.graphics.Canvas;
+import android.view.KeyEvent;
+import android.view.MotionEvent;
+import android.view.View;
+import android.view.ViewGroup;
+import com.GarbageKing.G;
+import com.Screens.EndScreen;
+import com.Screens.MainClass;
+import com.Screens.PauseMenu;
+
+
+@SuppressLint("ViewConstructor")
+public class InGame extends ViewGroup {
+	private MyInGame myInGame;
+	private PauseMenu pauseMenu;
+	private EndScreen endScreen;
+	public boolean freeze;
+	
+	public InGame(Context context, MainClass mainClass) {
+		super(context);
+		myInGame = new MyInGame(context, mainClass, this);
+		addView(myInGame);	
+		pauseMenu = new PauseMenu(context, this);
+		endScreen = new EndScreen(this);
+		freeze = false;
+	}
+
+	@Override
+	protected void onLayout(boolean arg0, int l, int t, int r, int b) {
+		myInGame.layout(l, t, r, b);
+	}
+
+//	public void start(int level) {
+//		freeze = false;
+//		myInGame.start(level);
+//	}
+
+	public void keyUp(int keyCode, KeyEvent event) {
+		if (keyCode == KeyEvent.KEYCODE_MENU) {
+			pauseMenu.setVisible();
+			freeze = true;
+		}
+	}
+
+	public void GameOver(boolean isWin) {
+		// TODO Auto-generated method stub
+		endScreen.GameOver(isWin);
+	}
+	
+//	public void ReleaseGameEngine() {
+//		myInGame._gameEngine.ReleaseGameEngine();
+//	}
+}
+
+class MyInGame extends View	{
+	public GameEngine _gameEngine;
+	InteractionListener _touchListener;
+	public MainClass parent;
+	public InGame cover;
+	
+	public MyInGame(Context context, MainClass mainClass, InGame cover) {
+		super(context);
+		_touchListener = new InteractionListener(this);		
+		_gameEngine = new GameEngine(G.context, this);	
+		parent = mainClass;
+		this.cover = cover;
+	}
+	
+	@Override
+	protected void onDraw(Canvas canvas) {		
+		_gameEngine.Show(canvas);
+		
+		if(parent.state == MainClass.IN_GAME && !cover.freeze) {
+			_gameEngine.Update();
+			invalidate();
+		}
+	}
+	
+	@Override
+	public boolean onTouchEvent(MotionEvent event) {
+		_gameEngine.SpellCheck(event);
+	
+		boolean _consumeEvent = _touchListener.onTouch(this, event);
+		postInvalidate();
+		return _consumeEvent;
+		
+	}
+
+//	public void start(int level) {
+//		_gameEngine.onStart(level);
+//	}
+}

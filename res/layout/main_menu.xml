@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" 
+    android:background="@drawable/main_menu" >
+
+    <ImageButton
+        android:layout_width="280dp"
+        android:layout_height="40dp"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="385dp"
+        android:background="@drawable/start_game"
+        android:contentDescription="@string/description"
+        android:onClick="startGameBtnClick" />
+    
+    <ImageButton
+        android:layout_width="280dp"
+        android:layout_height="40dp"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="422dp"
+        android:background="@drawable/load_game" 
+        android:contentDescription="@string/description"        
+        android:onClick="loadGameBtnClick"/>
+    
+    <ImageButton
+        android:layout_width="280dp"
+        android:layout_height="40dp"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="459dp"
+        android:background="@drawable/help"
+        android:contentDescription="@string/description"         
+        android:onClick="helpBtnClick"/>
+    
+    <ImageButton
+        android:layout_width="280dp"
+        android:layout_height="40dp"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="496dp"
+        android:background="@drawable/exit"
+        android:contentDescription="@string/description"         
+        android:onClick="exitBtnClick"/>
+    
+    <ImageButton
+	    android:layout_width="75dp" 
+	    android:layout_height="75dp"
+	    android:layout_alignParentBottom="true"
+	    android:layout_alignParentRight="true"
+	    android:background="@drawable/about_us"
+	    android:contentDescription="@string/description"	     
+	    android:onClick="aboutUsBtnClick"/>
+    
+    <ImageButton
+	    android:layout_width="75dp" 
+	    android:layout_height="75dp"
+	    android:layout_alignParentBottom="true"
+	    android:layout_alignParentLeft="true"
+	    android:background="@drawable/sound_on"
+	    android:contentDescription="@string/description"	     
+	    android:onClick="soundBtnClick"
+	    android:id="@+id/sound_menu_btn"/>
+    
+</RelativeLayout>

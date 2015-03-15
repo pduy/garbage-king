@@ -1,0 +1,103 @@
+package com.Object;
+
+import com.GarbageKing.G;
+
+import android.graphics.*;
+
+public class Player {
+	public static int REGAIN_TIME = 4000;
+	public static int MIN_MONEY_TO_REGAIN = 10;
+    public int _score;
+    public int _money;
+    
+    public boolean [][] _skillEnable;
+    public boolean _allSkillActive = false;
+
+    private int _elapseTime = 0;
+    Paint _paint;    
+    int _scoreX, _scoreY, _moneyX, _moneyY;
+
+    public Player(int score, int money, int lives)
+    {
+        _score = score;
+        _money = money;
+
+        _paint = new Paint();
+        _paint.setTextSize(18);
+        
+        _skillEnable = new boolean[3][];
+        for (int i = 0; i < 3; i++)
+        {
+            _skillEnable[i] = new boolean[4];
+        }
+
+        EnableAllSkill();
+        _scoreX = 380;
+        _scoreY = 30;
+        _moneyX = 380;
+        _moneyY = 780;
+        
+        _elapseTime = 0;
+    }
+
+    public void KillMonster(Monster _monster)
+    {
+        _score += _monster._score;
+        _money += _monster._moneyDrop;
+    }
+
+    public void UseMoney(int _useMoney)
+    {
+        _money -= _useMoney;
+    }
+
+    public void Show(Canvas spriteBatch)
+    {
+    	_paint.setColor(Color.rgb(1, 222, 217));
+        spriteBatch.drawText("Score: " + String.valueOf(_score), _scoreX, _scoreY, _paint);
+        _paint.setColor(Color.YELLOW);
+        spriteBatch.drawText("Money: " + String.valueOf(_money), _moneyX, _moneyY, _paint);
+    }
+
+    public void EnableAllSkill()
+    {
+        for (int i = 0; i < 3; i++)
+        {
+            for (int j = 0; j < 4; j++)
+                _skillEnable[i][j] = true;
+        }
+        _allSkillActive = true;
+    }
+
+    public void DisableAllSkillExceptTheFirstOne()
+    {
+        for (int i = 0; i < 3; i++)
+        {
+            for (int j = 0; j < 4; j++)
+                _skillEnable[i][j] = false;
+        }
+        _allSkillActive = false;
+        _skillEnable[0][0] = true;
+    }
+    
+    public void LoadGame()
+    {
+    	
+    }
+    
+    public void SaveGame()
+    {
+    	
+    }
+    
+    public void Update()
+    {
+    	_elapseTime += G.timerTick;
+    	if (_elapseTime > REGAIN_TIME)
+    	{
+    		if (_money < MIN_MONEY_TO_REGAIN)
+    		_money ++;
+    		_elapseTime = 0;
+    	}
+    }
+}

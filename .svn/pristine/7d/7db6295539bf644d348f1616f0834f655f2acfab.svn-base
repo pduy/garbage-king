@@ -1,0 +1,85 @@
+package com.InGame;
+
+import java.util.ArrayList;
+
+import android.graphics.Canvas;
+import android.graphics.Rect;
+
+import com.GarbageKing.*;
+import com.Object.PathGuideObject;
+
+public class EarthquakeSpell {
+	public static int SHAKE_DX = 2; // Shaking radius of the background or canvas
+	private static int SKILL_TIME = 5000;
+	private static float DEEPEST_PLACE_TO_DROP = 7 * G.screenHeight / 8 - 20;
+	private int _damage;
+	
+	//The stone falls from right to left
+	private static int SHIFT_RIGHT = 45;
+	private static int SHIFT_UP = 180;
+	public static int MONEY_COST = 20;
+	private int _elapseTime = 0;
+	private Rect _hitRect;
+	private GameEngine _gameEngine;
+	ArrayList<PathGuideObject> _stoneList;
+	public EarthquakeSpell(GameEngine gameEngine)
+	{
+		_stoneList = new ArrayList<PathGuideObject>();
+		_damage = 30;
+		_hitRect = new Rect();
+		this._gameEngine = gameEngine;
+	}
+
+	public boolean Update()
+	{
+		_elapseTime += G.timerTick;
+		for (PathGuideObject _obj : _stoneList)
+		{
+			_obj.Update();
+			if (_obj._isDestroyed && _obj._acceleration != 0)
+			{
+				_hitRect.set((int)_obj._x, (int)_obj._y, (int)_obj._x + _obj._livingSprite.desWidth, (int)_obj._y + _obj._livingSprite.desHeight);
+				_gameEngine.SkillHit(_hitRect, _damage);
+				_obj._acceleration = 0;
+			}
+		}
+		for (PathGuideObject _obj : _stoneList)
+			if (!_obj._isTerminated)
+				return true;
+		if (_elapseTime <= SKILL_TIME)
+			return true;
+		return false;
+	}
+	
+	public void Show(Canvas _gameCanvas)
+	{
+		for (PathGuideObject _obj : _stoneList)
+			if (!_obj._isTerminated)
+				_obj.Show(_gameCanvas);
+	}
+	
+	public boolean AddStone(float x, float y)
+	{
+		if (y < DEEPEST_PLACE_TO_DROP && _elapseTime < SKILL_TIME)
+		{
+			_stoneList.add(CloneStone(x, y));
+			return true;
+		}
+		return false;
+	}
+	
+	public PathGuideObject CloneStone(float x, float y)
+	{
+		int desx = (int)x, desy = (int)y;
+		int _x = (int)x + SHIFT_RIGHT;
+		int _y = (int)y - SHIFT_UP;
+		return new PathGuideObject(_x, _y, desx , desy, 6, 0, new Sprite(G.stone, 1, 40, 40),  
+				new Sprite(G.fireExplosion, 10, 80, 80), 0, 1.1f);
+	}
+	
+	public void RefreshSkill()
+	{
+		_elapseTime = 0;
+		_stoneList.clear();
+	}
+}

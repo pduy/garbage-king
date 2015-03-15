@@ -1,0 +1,272 @@
+package com.GarbageKing;
+
+import java.util.Random;
+
+import com.Object.*;
+
+import android.content.Context;
+import android.content.res.Resources;
+import android.graphics.*;
+import android.media.*;
+import android.view.*;
+
+/*
+ * All macros, constants, global variables, general methods are listed here.
+ */
+public abstract class G {
+
+	// Macros, constants, global variables...-----------------------------------------------------------
+	//--------------------------------------------------------------------------------------------------
+	public static Player player;
+	public static MediaPlayer music;
+	public static Context context;
+	public static int timerTick;
+	
+	public static Bitmap blackImg;
+	public static Bitmap pyramid;
+	public static Bitmap sword;
+	
+	//Monster bitmap
+	public static Bitmap stage1;
+	
+	public static Bitmap cocacolaGoDown;
+//	public static Bitmap cocacolaGoUp;
+	public static Bitmap cocacolaGoRight;
+	public static Bitmap cocacolaAttack;
+	
+	public static Bitmap cigarGoDown;
+//	public static Bitmap cigarGoUp;
+	public static Bitmap cigarGoRight;
+	public static Bitmap cigarAttack;
+	
+	public static Bitmap snackGoDown;
+//	public static Bitmap snackGoUp;
+	public static Bitmap snackGoRight;
+	public static Bitmap snackAttack;
+	
+	public static Bitmap treeLiving;
+	public static Bitmap treeDying;
+	
+	public static Bitmap winTexture;
+	public static Bitmap loseTexture;
+	
+	//region Sound 
+//    public static SoundEffect btnClickSoundEffect;
+//    public static SoundEffect lightning;
+	
+    //region Others
+    public static int screenWidth;
+    public static int screenHeight;
+    public static Bitmap dot;
+
+    //region Elements
+    public static Bitmap eFire;
+    public static Bitmap eWater;
+    public static Bitmap eWood;
+    public static Bitmap eEarth;
+    public static Bitmap eMetal;
+    public static Bitmap fireExplosion;
+    public static Bitmap thunder;
+    public static Bitmap stone;
+
+    //region objects
+    public static Bitmap red_bullet_1;
+    public static Bitmap red_bullet_2;
+    public static Bitmap blue_bullet_1;
+    public static Bitmap blue_bullet_2;
+    public static Bitmap green_bullet_1;
+    public static Bitmap green_bullet_2;
+    
+    public static Bitmap towerTexture;
+
+    public static Bitmap explosion_red;
+    public static Bitmap explosion_blue;
+    public static Bitmap explosion_green;
+
+    public static Bitmap red_bar;
+    public static Bitmap blue_bar;
+    public static Bitmap green_bar;
+
+    //public static Bitmap gain_power;
+    public static Bitmap gain_power_red;
+    public static Bitmap gain_power_blue;
+    public static Bitmap gain_power_green;
+    public static Random _random;
+
+	// Initialization-----------------------------------------------------------------------------------
+	//--------------------------------------------------------------------------------------------------
+   
+    
+    public static void initGame(Resources res) {
+		_random = new Random();
+		
+		stage1 = BitmapFactory.decodeResource(res, R.drawable.stage1);
+		
+    	cocacolaGoDown = BitmapFactory.decodeResource(res, R.drawable.go_down_cocacola);
+//    	cocacolaGoUp = BitmapFactory.decodeResource(res, R.drawable.go_up_cocacola);
+    	cocacolaGoRight = BitmapFactory.decodeResource(res, R.drawable.go_right_cocacola);      
+    	cigarGoDown = BitmapFactory.decodeResource(res, R.drawable.cigar_series);
+//    	cigarGoUp = BitmapFactory.decodeResource(res, R.drawable.cigar_up_series);
+        cigarGoRight = BitmapFactory.decodeResource(res, R.drawable.cigar_right_series);
+        cocacolaAttack = BitmapFactory.decodeResource(res, R.drawable.attack_cocacola);
+        cigarAttack = BitmapFactory.decodeResource(res, R.drawable.cigar_attack);
+        snackGoDown = BitmapFactory.decodeResource(res, R.drawable.down_snack);
+//        snackGoUp = BitmapFactory.decodeResource(res, R.drawable.up_snack);
+        snackGoRight = BitmapFactory.decodeResource(res, R.drawable.right_snack);
+        snackAttack = BitmapFactory.decodeResource(res, R.drawable.attack_snack);
+        
+        treeLiving = BitmapFactory.decodeResource(res, R.drawable.tree_living);
+        treeDying = BitmapFactory.decodeResource(res, R.drawable.tree_dying);
+    	
+        
+     // Load Bullet
+        red_bullet_1 = BitmapFactory.decodeResource(res, R.drawable.fire_bullet_1);
+        red_bullet_2 = BitmapFactory.decodeResource(res, R.drawable.fire_bullet_2);
+        blue_bullet_1 = BitmapFactory.decodeResource(res, R.drawable.blue_bullet_1);
+        blue_bullet_2 = BitmapFactory.decodeResource(res, R.drawable.blue_bullet_2);
+        green_bullet_1 = BitmapFactory.decodeResource(res, R.drawable.green_bullet_1);
+        green_bullet_2 = BitmapFactory.decodeResource(res, R.drawable.green_bullet_2);
+        
+        towerTexture = BitmapFactory.decodeResource(res, R.drawable.tower);
+        
+        explosion_red = BitmapFactory.decodeResource(res, R.drawable.fire_explosion_1);
+        explosion_blue = BitmapFactory.decodeResource(res, R.drawable.blue_explosion);
+        explosion_green = BitmapFactory.decodeResource(res, R.drawable.green_explosion);
+
+        red_bar = BitmapFactory.decodeResource(res, R.drawable.fire_line_orange_png);
+        blue_bar = BitmapFactory.decodeResource(res, R.drawable.fire_line_blue_png);
+        green_bar = BitmapFactory.decodeResource(res, R.drawable.fire_line_green_png);
+
+        //gain_power = BitmapFactory.decodeResource(res, R.drawable.gain_power);
+        gain_power_red = BitmapFactory.decodeResource(res, R.drawable.gain_power_1);
+        gain_power_blue = BitmapFactory.decodeResource(res, R.drawable.gain_power_2);
+        gain_power_green = BitmapFactory.decodeResource(res, R.drawable.gain_power_3);
+        winTexture = BitmapFactory.decodeResource(res, R.drawable.you_win);
+        loseTexture = BitmapFactory.decodeResource(res, R.drawable.you_lose);
+        
+		player = new Player(0, 50, 2);
+    }
+    
+    public static void releaseGame() {
+    	stage1.recycle();
+    	cocacolaGoDown.recycle();
+//    	cocacolaGoUp.recycle();
+    	cocacolaGoRight.recycle();      
+    	cigarGoDown.recycle();
+//    	cigarGoUp.recycle();
+        cigarGoRight.recycle();
+        cocacolaAttack.recycle();
+        cigarAttack.recycle();
+        snackGoDown.recycle();
+//        snackGoUp.recycle();
+        snackGoRight.recycle();
+        snackAttack.recycle();
+        red_bullet_1.recycle();
+        red_bullet_2.recycle();
+        blue_bullet_1.recycle();
+        blue_bullet_2.recycle();
+        green_bullet_1.recycle();
+        green_bullet_2.recycle();
+        towerTexture.recycle();
+        explosion_red.recycle();
+        explosion_blue.recycle();
+        explosion_green.recycle();
+        red_bar.recycle();
+        blue_bar.recycle();
+        green_bar.recycle();
+        gain_power_red.recycle();
+        gain_power_blue.recycle();
+        gain_power_green.recycle();
+        winTexture.recycle();
+        loseTexture.recycle();
+       
+        stage1 = null;
+    	cocacolaGoDown = null;
+//    	cocacolaGoUp = null;
+    	cocacolaGoRight = null;      
+    	cigarGoDown = null;
+//    	cigarGoUp = null;
+        cigarGoRight = null;
+        cocacolaAttack = null;
+        cigarAttack = null;
+        snackGoDown = null;
+//        snackGoUp = null;
+        snackGoRight = null;
+        snackAttack = null;        
+        red_bullet_1 = null;
+        red_bullet_2 = null;
+        blue_bullet_1 = null;
+        blue_bullet_2 = null;
+        green_bullet_1 = null;
+        green_bullet_2 = null;
+        towerTexture = null;
+        explosion_red = null;
+        explosion_blue = null;
+        explosion_green = null;
+        red_bar = null;
+        blue_bar = null;
+        green_bar = null;
+        gain_power_red = null;
+        gain_power_blue = null;
+        gain_power_green = null;
+        winTexture = null;
+        loseTexture = null;
+    }
+    
+	public static void init(Context c, Resources res, int screenWidth, int screenHeight) {
+		music = MediaPlayer.create(c, R.raw.main_menu_music);
+		music.setLooping(true);
+		music.start();
+		
+		G.screenWidth = screenWidth;
+		G.screenHeight = screenHeight;
+		context = c;
+		timerTick = 20;
+		
+		blackImg = BitmapFactory.decodeResource(res, R.drawable.black);
+		pyramid = BitmapFactory.decodeResource(res, R.drawable.pyramid);
+		sword = BitmapFactory.decodeResource(res, R.drawable.long_sword);
+		//Load elements
+        eFire = BitmapFactory.decodeResource(res, R.drawable.e_fire);
+        eWater = BitmapFactory.decodeResource(res, R.drawable.e_water);
+        eWood = BitmapFactory.decodeResource(res, R.drawable.e_wood);
+        eEarth = BitmapFactory.decodeResource(res, R.drawable.e_earth);
+        eMetal = BitmapFactory.decodeResource(res, R.drawable.e_metal);
+        
+        //Skill texture
+        fireExplosion = BitmapFactory.decodeResource(res, R.drawable.fire_explosion);
+        thunder = BitmapFactory.decodeResource(res, R.drawable.thunder);
+        stone = BitmapFactory.decodeResource(res, R.drawable.stone);
+	}
+
+	// Finalization-------------------------------------------------------------------------------------
+	//--------------------------------------------------------------------------------------------------
+	public static void finalizes() {
+		if (music != null) {
+			if (music.isPlaying()) {
+				music.stop();
+			}
+			music.release();
+			music = null;
+		}
+	}
+
+	// More supporting functions-------------------------------------------------------------------------
+	//---------------------------------------------------------------------------------------------------
+	public static void clickSoundBtn(View v, int on_id, int off_id) {				
+		if (music.isPlaying()) {
+			music.pause();			
+			music.seekTo(0);
+			v.setBackgroundResource(off_id);
+		}
+		else {
+			music.start();
+			v.setBackgroundResource(on_id);
+		}
+	}
+	
+	public static void updateSoundBtnRes(View v, int on_id, int off_id) {
+		int id = music.isPlaying() ? on_id : off_id;
+		v.setBackgroundResource(id);
+	}
+}
